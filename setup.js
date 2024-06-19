@@ -26,6 +26,10 @@ PROJECTS.split(',').forEach(project => {
     console.log('** DEPENDENCIES:', depProjects.join(' + '));
     console.log('**');
 
+    // Remove old project bundle
+    fs.removeSync(webappsProjectFolder);
+    console.log('** INFO:', `Removed old bundle "${webappsProjectFolder}"`);
+
     // Duplicate the zip file
     const duplicatedBiruniBundlePath = path.join(webappsProjectFolder, path.basename(BIRUNI_PATH)); // C:\Program Files\Apache Software Foundation\Tomcat 10.1\webapps\smartup5x_core\biruni.zip
     fs.copySync(BIRUNI_PATH, duplicatedBiruniBundlePath);
