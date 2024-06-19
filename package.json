@@ -10,10 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "adm-zip": "^0.5.12",
+    "adm-zip": "^0.5.14",
     "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
-    "glob": "^10.4.1",
+    "glob": "^10.4.2",
     "replace-in-file": "^7.2.0"
   }
 }
