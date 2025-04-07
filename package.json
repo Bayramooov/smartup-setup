@@ -1,19 +1,17 @@
 {
   "name": "smartup-setup",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "This is a tool for setting up multiple tomcat applications in one click dedicated for Smartup projects.",
-  "main": "setup.js",
+  "main": "build.js",
   "scripts": {
-    "start": "node setup.js"
+    "build": "node build.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "adm-zip": "^0.5.14",
-    "dotenv": "^16.4.5",
-    "fs-extra": "^11.2.0",
-    "glob": "^10.4.2",
-    "replace-in-file": "^7.2.0"
+    "@octokit/rest": "^21.1.1",
+    "dotenv": "^16.4.7",
+    "unzipper": "^0.12.3"
   }
 }

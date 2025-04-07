@@ -1,0 +1,24 @@
+services:
+  tomcat:
+    image: tomcat:10-jdk21
+    container_name: birunix
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./app_biruni:/usr/local/tomcat/webapps/ROOT
+      - ./application.properties:/usr/local/tomcat/webapps/.properties:ro
+    environment:
+      - CATALINA_OPTS=-Xmx512m -Xms256m
+    restart: unless-stopped
+
+volumes:
+  tomcat-data:
+    name: tomcat-data
+
+networks:
+  default:
+    driver: bridge
