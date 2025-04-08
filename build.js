@@ -6,10 +6,13 @@ const { rm } = require('fs/promises');
 const { Octokit } = require('@octokit/rest');
 const { unzipAndMoveFiles } = require('./unzip-and-move');
 
+// Check if to build dev
+const isBuildDev = process.argv[2] === '--dev';
+
 // GitHub configuration
 const owner = 'greenwhite';
 const repo = 'biruni';
-const assetNames = ['app_biruni.zip', 'lib.zip'];
+const assetNames = [isBuildDev ? 'app_biruni_dev.zip' : 'app_biruni.zip', 'lib.zip'];
 
 // Get PAT from environment variable
 const token = process.env.GITHUB_TOKEN;
@@ -111,7 +114,7 @@ async function main() {
 
 (async function () {
   await main();
-  unzipAndMoveFiles()
+  unzipAndMoveFiles(isBuildDev)
     .then(() => console.log('Unzip process completed'))
     .catch(err => console.error('Unzip process failed:', err));
 })();

@@ -10,9 +10,11 @@ const unzipper = require('unzipper');
  * @param {string} downloadDir - Directory where zip files are stored
  * @returns {Promise<void>}
  */
-async function unzipAndMoveFiles(downloadDir = path.join(__dirname, 'downloads')) {
+async function unzipAndMoveFiles(isBuildDev, downloadDir = path.join(__dirname, 'downloads')) {
+  const appZipName = isBuildDev ? 'app_biruni_dev.zip' : 'app_biruni.zip';
+
   try {
-    const appZipPath = path.join(downloadDir, 'app_biruni.zip');
+    const appZipPath = path.join(downloadDir, appZipName);
     const libZipPath = path.join(downloadDir, 'lib.zip');
     const finalDir = path.resolve(__dirname, './app_biruni');
 
@@ -20,14 +22,14 @@ async function unzipAndMoveFiles(downloadDir = path.join(__dirname, 'downloads')
 
     // 1. Ensure files exist
     if (!fs.existsSync(appZipPath)) {
-      throw new Error(`app_biruni.zip not found at ${appZipPath}`);
+      throw new Error(`${appZipName} not found at ${appZipPath}`);
     }
     if (!fs.existsSync(libZipPath)) {
       throw new Error(`lib.zip not found at ${libZipPath}`);
     }
 
     // 2. Unzip app_biruni.zip to parent directory
-    console.log(`Unzipping app_biruni.zip to ${finalDir}...`);
+    console.log(`Unzipping ${appZipName} to ${finalDir}...`);
     await extractZip(appZipPath, finalDir);
 
     // 3. Ensure the target directory for lib.zip exists

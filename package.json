@@ -4,7 +4,8 @@
   "description": "This is a tool for setting up multiple tomcat applications in one click dedicated for Smartup projects.",
   "main": "build.js",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "build-dev": "node build.js --dev"
   },
   "keywords": [],
   "author": "",
