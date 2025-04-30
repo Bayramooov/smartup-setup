@@ -7,7 +7,8 @@ const { Octokit } = require('@octokit/rest');
 const { unzipAndMoveFiles } = require('./unzip-and-move');
 
 // Check if to build dev
-const isBuildDev = process.argv[2] === '--dev';
+const isBuildDev = process.argv.slice(2).includes('--dev');
+const versionTag = process.argv[2];
 
 // GitHub configuration
 const owner = 'greenwhite';
@@ -73,12 +74,20 @@ function downloadFile(url, fileName) {
 async function main() {
   try {
     // Get the latest release
-    const { data: latestRelease } = await octokit.repos.getLatestRelease({
-      owner,
-      repo,
-    });
+    if (!versionTag) {
+      var { data: repoRelease } = await octokit.repos.getLatestRelease({
+        owner,
+        repo,
+      });
+    } else {
+      var { data: repoRelease } = await octokit.repos.getReleaseByTag({
+        owner,
+        repo,
+        tag: versionTag,
+      });
+    }
 
-    console.log(`Latest release: ${latestRelease.tag_name}`);
+    console.log(`Latest release: ${repoRelease.tag_name}`);
 
     // Create downloads directory if it doesn't exist
     const downloadDir = path.join(__dirname, 'downloads');
@@ -94,7 +103,7 @@ async function main() {
     // Filter and download the required assets
     const downloadPromises = [];
 
-    for (const asset of latestRelease.assets) {
+    for (const asset of repoRelease.assets) {
       if (assetNames.includes(asset.name)) {
         const filePath = path.join(downloadDir, asset.name);
         console.log(`Downloading ${asset.name}...`);
