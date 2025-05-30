@@ -1,4 +1,2 @@
-app_biruni/
-downloads/
-node_modules/
 .env
+application.properties

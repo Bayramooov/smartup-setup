@@ -1,0 +1,32 @@
+name: biruni-dev
+
+services:
+  biruni:
+    image: ghcr.io/greenwhite/biruni-dev:latest
+    container_name: biruni-dev-docker
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    volumes:
+      - ./application.properties:/usr/local/tomcat/webapps/.properties:ro
+      - ../../projects:/projects:ro
+    environment:
+      - CATALINA_OPTS=-Xmx8096m -Xms512m
+
+  watchtower:
+    image: containrrr/watchtower:1.7.1
+    container_name: biruni-dev-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - REPO_USER=${GITHUB_USER}
+      - REPO_PASS=${GITHUB_TOKEN}
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300 # Check every 5 minutes (300 seconds)
+      - WATCHTOWER_TIMEOUT=60s
+      - WATCHTOWER_NO_RESTART=false
+      - TZ=Asia/Tashkent
+    command: biruni-dev-docker # Only watch this container
